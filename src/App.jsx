@@ -17,7 +17,7 @@ export default function App() {
   const [id, setId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
-  const [toast, setToast] = useState(true);
+  const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState(null);
   const getData = () => {
     setLoading(true);

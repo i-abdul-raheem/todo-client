@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const url =
-  process.env.REACT_APP_NODE_ENV !== 'local'
+  process.env.REACT_APP_NODE_ENV === 'local'
     ? 'http://localhost:5000'
     : 'https://todo-api-virid.vercel.app';
 
