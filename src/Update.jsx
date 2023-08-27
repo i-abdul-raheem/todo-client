@@ -1,44 +1,54 @@
-import axios from 'axios';
 import { useLayoutEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+import { getOne, updateOne } from './api';
 
-export const UpdateModal = ({ id, getData }) => {
+export const UpdateModal = ({ id, getData, setId, setToast, setToastMsg }) => {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const handleUpdate = (e) => {
     e.preventDefault();
     setLoading(true);
-    axios
-      .put(`http://localhost:5000/${id}`, { title })
-      .then(() => {
+    updateOne(id, { title })
+      .then((res) => {
         setShow(false);
         setLoading(false);
+        setId(null);
+        setToastMsg(res?.message);
+        setToast(true);
         getData();
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
+        setId(null);
       });
   };
   useLayoutEffect(() => {
     if (id) {
       setLoading(true);
-      axios
-        .get(`http://localhost:5000/${id}`)
+      getOne(id)
         .then((res) => {
-          setTitle(res.data.data.title);
+          setTitle(res?.title);
           setShow(true);
           setLoading(false);
         })
         .catch((err) => {
           console.log(err);
           setLoading(false);
+          setId(null);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   return (
-    <Modal show={show} onHide={() => setShow(false)}>
+    <Modal
+      show={show}
+      onHide={() => {
+        setShow(false);
+        setId(null);
+      }}
+    >
       <Modal.Header>
         <Modal.Title>Update Item</Modal.Title>
       </Modal.Header>
